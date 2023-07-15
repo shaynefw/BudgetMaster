@@ -74,6 +74,7 @@ button:hover {
 }
 pre {
     display: none;
+    background-color: white;
 }
 @media print {
     body * {
