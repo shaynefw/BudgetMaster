@@ -85,10 +85,14 @@ pre {
 @media print {
     body * {
         display: none;
+        background-color: white;
+        color: black;
     }
 
     #print-output {
         display: block;
+        background-color: white;
+        color: black;
     }
 }
 
