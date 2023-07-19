@@ -1,154 +1,164 @@
 body {
-    background-color: #2c2f33;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+  background-color: #2c2f33;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .container {
-    width: 90%;
-    max-width: 800px;
-    background-color: #36393f;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 800px;
+  background-color: #36393f;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 div {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 label {
-    font-size: 18px;
-    margin-bottom: 10px;
-    display: block;
+  font-size: 18px;
+  margin-bottom: 10px;
+  display: block;
 }
 
-input, button {
-    padding: 10px;
-    font-size: 18px;
+input,
+button {
+  padding: 10px;
+  font-size: 18px;
 }
 
 input {
-    width: 100%;
-    color: #08f7fe;
-    background: #35393f;
-    border: 2px solid lightsteelblue;
-    border-radius: 12px;
+  width: 100%;
+  color: #08f7fe;
+  background: #35393f;
+  border: 2px solid lightsteelblue;
+  border-radius: 12px;
 }
 
 button {
-    background-color: #333; /* Dark background */
-    color: #fff; /* White text */
-    border: 3px solid #08f7fe;  /* Neon blue border */
-    box-shadow: 0 0 10px #08f7fe, 0 0 20px #08f7fe, 0 0 30px #08f7fe, 0 0 40px #08f7fe; /* Neon blue glow */
-    padding: 10px 20px;
-    margin: 20px 0;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background-color: #333; /* Dark background */
+  color: #fff; /* White text */
+  border: 3px solid #08f7fe; /* Neon blue border */
+  box-shadow: 0 0 10px #08f7fe, 0 0 20px #08f7fe, 0 0 30px #08f7fe,
+    0 0 40px #08f7fe; /* Neon blue glow */
+  padding: 10px 20px;
+  margin: 20px 0;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-    background-color: #08f7fe; /* Neon blue background on hover */
-    color: #333; /* Dark text on hover */
-    box-shadow: 0 0 5px #ff2c55, 0 0 10px #ff2c55, 0 0 15px #ff2c55, 0 0 20px #ff2c55; /* Neon red glow on hover */
+  background-color: #08f7fe; /* Neon blue background on hover */
+  color: #333; /* Dark text on hover */
+  box-shadow: 0 0 5px #ff2c55, 0 0 10px #ff2c55, 0 0 15px #ff2c55,
+    0 0 20px #ff2c55; /* Neon red glow on hover */
 }
-
 
 #results {
-    position: sticky;
-    bottom: 0;
-    width: 100%;
-    background-color: #333;
-    color: #08f7fe;
-    padding: 10px;
-    text-align: center;
-    font-size: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #08f7fe;
+  padding: 10px;
+  text-align: center;
+  font-size: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 pre {
-    display: none;
-    background-color: white;
+  display: none;
+  background-color: white;
 }
 @media print {
-    body * {
-        display: none;
-        background-color: white;
-        color: black;
-    }
+  html * {
+    display: none;
+    background-color: white;
+    color: black;
+  }
 
-    #print-output {
-        display: block;
-        background-color: white;
-        color: black;
-    }
+  body * {
+    display: none;
+    background-color: white;
+    color: black;
+  }
+
+  #print-output {
+    display: block;
+    background-color: white;
+    color: black;
+  }
 }
 
 /* info button */
 
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-    background-color: #333; /* Dark background */
-    color: #fff; /* White text */
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    border: 3px solid #08f7fe;  /* Neon blue border */
-    box-shadow: 0 0 10px #08f7fe, 0 0 20px #08f7fe, 0 0 30px #08f7fe, 0 0 40px #08f7fe; /* Neon blue glow */
+  background-color: #333; /* Dark background */
+  color: #fff; /* White text */
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border: 3px solid #08f7fe; /* Neon blue border */
+  box-shadow: 0 0 10px #08f7fe, 0 0 20px #08f7fe, 0 0 30px #08f7fe,
+    0 0 40px #08f7fe; /* Neon blue glow */
 }
 
 .close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    color: #08f7fe; /* Neon blue text */
-    text-shadow: 0 0 5px #08f7fe, 0 0 10px #08f7fe, 0 0 15px #08f7fe, 0 0 20px #08f7fe; /* Neon blue glow */
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  color: #08f7fe; /* Neon blue text */
+  text-shadow: 0 0 5px #08f7fe, 0 0 10px #08f7fe, 0 0 15px #08f7fe,
+    0 0 20px #08f7fe; /* Neon blue glow */
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: #ff2c55; /* Neon red text on hover/focus */
-    text-shadow: 0 0 5px #ff2c55, 0 0 10px #ff2c55, 0 0 15px #ff2c55, 0 0 20px #ff2c55; /* Neon red glow on hover/focus */
-    cursor: pointer;
+  color: #ff2c55; /* Neon red text on hover/focus */
+  text-shadow: 0 0 5px #ff2c55, 0 0 10px #ff2c55, 0 0 15px #ff2c55,
+    0 0 20px #ff2c55; /* Neon red glow on hover/focus */
+  cursor: pointer;
 }
 
 /* end of info */
 
-
 /* income and bills title */
-#income, #bills {
-    
-    border: 3px solid #ffe48d;  /* Neon red border */
-    box-shadow: 0 0 5px #f9f9f9; /* Reduced neon red glow */
+#income,
+#bills {
+  border: 3px solid #ffe48d; /* Neon red border */
+  box-shadow: 0 0 5px #f9f9f9; /* Reduced neon red glow */
 }
 
-#income:focus, #bills:focus {
-    outline: none;
-    box-shadow: 0 0 5px #08f7fe; /* Reduced neon blue glow on focus */
+#income:focus,
+#bills:focus {
+  outline: none;
+  box-shadow: 0 0 5px #08f7fe; /* Reduced neon blue glow on focus */
 }
-
