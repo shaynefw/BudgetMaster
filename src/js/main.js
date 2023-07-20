@@ -155,10 +155,6 @@ function createField(type, name, placeholder) {
   // Add an input event listener to the field
   field.addEventListener("input", calculateRemainingIncome);
 
-  field.addEventListener("focus", function () {
-    document.getElementById("results").scrollIntoView({ behavior: "smooth" });
-  });
-  
   return div;
 
 }
