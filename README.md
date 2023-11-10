@@ -11,7 +11,9 @@ BudgetMaster is a responsive web application designed to help users manage their
 
 ## Installation
 
-[Click Here](https://shaynefw.github.io/BudgetMaster/) to visit site.
+<a href="https://shaynefw.github.io/BudgetMaster/" target="_blank">Click Here</a> to visit site.
+
+
 
 ## Usage
 
