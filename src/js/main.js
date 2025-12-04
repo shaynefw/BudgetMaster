@@ -107,9 +107,9 @@ function setupEventListeners() {
         }
     });
 
-    document.getElementById('calculateBtn').addEventListener('click', (e) => {
+    document.getElementById('downloadBtn').addEventListener('click', (e) => {
         e.preventDefault();
-        calculateRemaining();
+        downloadBudget();
     });
 
     document.getElementById('printBtn').addEventListener('click', (e) => {
@@ -208,20 +208,31 @@ function calculateRemaining() {
         resultsContainer.appendChild(breakdown);
     }
 
-// Update print output - Plain text format
+    // Update print output - Only print remaining income and expense breakdown
     const printOutput = document.getElementById('print-output');
-    let printText = 'BUDGETMASTER - Budget Summary\n\n';
-    printText += `Income: $${income.toFixed(2)}\n`;
-    printText += `Monthly Bills: $${bills.toFixed(2)}\n\n`;
+    let printText = 'Remaining Income: $' + remaining.toFixed(2) + '\n\n';
+    printText += 'Expense Breakdown:\n';
+    printText += 'Income: $' + income.toFixed(2) + '\n';
+    printText += 'Fixed Expenses: $' + bills.toFixed(2) + '\n';
     
     if (categoryDetails.length > 0) {
-        printText += 'Spending Categories:\n';
         categoryDetails.forEach(detail => {
-            printText += `  ${detail.name}: $${detail.amount.toFixed(2)}\n`;
+            printText += detail.name + ': $' + detail.amount.toFixed(2) + '\n';
         });
-        printText += '\n';
     }
     
-    printText += `Remaining Income: $${remaining.toFixed(2)}`;
     printOutput.textContent = printText;
+}
+
+function downloadBudget() {
+    calculateRemaining();
+    const printOutput = document.getElementById('print-output').textContent;
+    
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(printOutput));
+    element.setAttribute('download', 'budget_summary.txt');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
 }
