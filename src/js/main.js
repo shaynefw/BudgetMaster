@@ -208,15 +208,20 @@ function calculateRemaining() {
         resultsContainer.appendChild(breakdown);
     }
 
-    // Update print output
+// Update print output - Plain text format
     const printOutput = document.getElementById('print-output');
-    let printText = `BUDGETMASTER - Budget Summary\n\n`;
+    let printText = 'BUDGETMASTER - Budget Summary\n\n';
     printText += `Income: $${income.toFixed(2)}\n`;
-    printText += `Fixed Expenses: $${bills.toFixed(2)}\n\n`;
-    printText += `Category Spending:\n`;
-    categoryDetails.forEach(detail => {
-        printText += `  ${detail.name}: $${detail.amount.toFixed(2)}\n`;
-    });
-    printText += `\nRemaining Income: $${remaining.toFixed(2)}\n`;
+    printText += `Monthly Bills: $${bills.toFixed(2)}\n\n`;
+    
+    if (categoryDetails.length > 0) {
+        printText += 'Spending Categories:\n';
+        categoryDetails.forEach(detail => {
+            printText += `  ${detail.name}: $${detail.amount.toFixed(2)}\n`;
+        });
+        printText += '\n';
+    }
+    
+    printText += `Remaining Income: $${remaining.toFixed(2)}`;
     printOutput.textContent = printText;
 }
