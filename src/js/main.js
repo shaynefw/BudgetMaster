@@ -1,67 +1,5 @@
-// Function to create form
-function createForm() {
-  // Get the form container
-  const formContainer = document.getElementById("form-container");
-
-  // Create the form
-  const form = document.createElement("form");
-  form.id = "budget-form";
-
-  // Create an information button
-  const infoButton = document.createElement("button");
-  infoButton.type = "button"; // Make sure the button doesn't submit the form
-  infoButton.textContent = "Information";
-  infoButton.addEventListener("click", function () {
-    document.getElementById("info-modal").style.display = "block";
-  });
-  form.appendChild(infoButton);
-
-  // Create income field
-  let incomeLabel = document.createElement("label");
-  incomeLabel.textContent = "Enter your monthly income:";
-  form.appendChild(incomeLabel);
-
-  let incomeInput = document.createElement("input");
-  incomeInput.type = "number";
-  incomeInput.id = "income";
-  incomeInput.name = "income";
-  incomeInput.required = true; // Make the field required
-  form.appendChild(incomeInput);
-
-  // Add event listener for validation styling
-  incomeInput.addEventListener("input", function () {
-    if (!this.value) {
-      this.style.borderColor = "red";
-    } else {
-      this.style.borderColor = "#08f7fe"; // Reset to neon blue border if value is entered
-      calculateRemainingIncome(); // Call the function that calculates the remaining income
-    }
-  });
-
-  // Create bills field
-  let billsLabel = document.createElement("label");
-  billsLabel.textContent = "Monthly bills:";
-  form.appendChild(billsLabel);
-
-  let billsInput = document.createElement("input");
-  billsInput.type = "number";
-  billsInput.id = "bills";
-  billsInput.name = "monthlyBills";
-  billsInput.required = true; // Make the field required
-  form.appendChild(billsInput);
-
-  // Add event listener for validation styling
-  billsInput.addEventListener("input", function () {
-    if (!this.value) {
-      this.style.borderColor = "red";
-    } else {
-      this.style.borderColor = "#08f7fe"; // Reset to neon blue border if value is entered
-      calculateRemainingIncome(); // Call the function that calculates the remaining income
-    }
-  });
-
-  // Create fields for spending categories
-  const categories = [
+// Default categories
+const DEFAULT_CATEGORIES = [
     "Hygiene",
     "Food",
     "Gas/Transportation",
@@ -69,132 +7,216 @@ function createForm() {
     "Event/Donations",
     "Emergency Saving",
     "Savings Growth",
-    "Pocket/Miscellaneous",
-  ];
-  categories.forEach((category) => {
-    const field = createField(
-      "number",
-      category,
-      `Enter amount for ${category}`
-    );
-    form.appendChild(field);
-  });
+    "Pocket/Miscellaneous"
+];
 
-  // Create a button to add more categories
-  const addCategoryButton = document.createElement("button");
-  addCategoryButton.type = "button"; // Make sure the button doesn't submit the form
-  addCategoryButton.textContent = "Add Category";
-  addCategoryButton.addEventListener("click", function () {
-    // Prompt the user for the category name
-    const category = prompt("Enter the category name:");
-    if (category) {
-      // Create a field for the new category
-      const field = createField(
-        "number",
-        category,
-        `Enter amount for ${category}`
-      );
-      // Insert the field before the add category button
-      form.insertBefore(field, addCategoryButton);
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    initializeForm();
+    setupEventListeners();
+});
+
+function initializeForm() {
+    const container = document.getElementById('categories-container');
+    DEFAULT_CATEGORIES.forEach(category => {
+        const field = createCategoryField(category, false);
+        container.appendChild(field);
+    });
+    calculateRemaining();
+}
+
+function createCategoryField(name, isCustom = true) {
+    const div = document.createElement('div');
+    div.className = 'form-group';
+    div.dataset.category = name;
+    div.dataset.custom = isCustom;
+
+    const label = document.createElement('label');
+    label.textContent = `${getEmojiForCategory(name)} ${name}`;
+    div.appendChild(label);
+
+    const inputContainer = document.createElement('div');
+    inputContainer.style.display = 'flex';
+    inputContainer.style.gap = 'var(--spacing-md)';
+    inputContainer.style.alignItems = 'center';
+
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.name = name;
+    input.id = name;
+    input.placeholder = '0.00';
+    input.step = '0.01';
+    input.addEventListener('input', calculateRemaining);
+    inputContainer.appendChild(input);
+
+    if (isCustom) {
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-small btn-secondary';
+        removeBtn.textContent = 'Remove';
+        removeBtn.style.minWidth = '80px';
+        removeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            div.remove();
+            calculateRemaining();
+        });
+        inputContainer.appendChild(removeBtn);
     }
-  });
-  form.appendChild(addCategoryButton);
 
-  // Create a print button
-  const printButton = document.createElement("button");
-  printButton.type = "button"; // Make sure the button doesn't submit the form
-  printButton.textContent = "Print";
-  printButton.addEventListener("click", function () {
-    window.print();
-  });
-  form.appendChild(printButton);
-
-  // Add the form to the form container
-  formContainer.appendChild(form);
-
-  // Calculate the remaining income
-  calculateRemainingIncome();
+    div.appendChild(inputContainer);
+    return div;
 }
 
-// Get the modal
-let modal = document.getElementById("info-modal");
-
-// Get the <span> element that closes the modal
-let span = document.getElementsByClassName("close-button")[0];
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-  modal.style.display = "none";
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
-// Helper function to create a form field
-function createField(type, name, placeholder) {
-  // Create a div to hold the label and input
-  const div = document.createElement("div");
-
-  // Create a label
-  const label = document.createElement("label");
-  label.for = name;
-  label.textContent = placeholder;
-  div.appendChild(label);
-
-  // Create the input
-  const field = document.createElement("input");
-  field.type = type;
-  field.name = name;
-  field.id = name; // The label's 'for' attribute should match the input's id
-  div.appendChild(field);
-
-  // Add an input event listener to the field
-  field.addEventListener("input", calculateRemainingIncome);
-
-  return div;
-
+function getEmojiForCategory(category) {
+    const emojiMap = {
+        'Hygiene': '💅',
+        'Food': '🍔',
+        'Gas/Transportation': '⛽',
+        'Car Maintenance': '🚗',
+        'Event/Donations': '🎉',
+        'Emergency Saving': '🏦',
+        'Savings Growth': '📈',
+        'Pocket/Miscellaneous': '💸'
+    };
+    return emojiMap[category] || '💰';
 }
 
-// Function to calculate remaining income
-function calculateRemainingIncome() {
-  // Get the income and monthly bills from the form
-  const income =
-    parseFloat(document.querySelector('input[name="income"]').value) || 0;
-  const monthlyBills =
-    parseFloat(document.querySelector('input[name="monthlyBills"]').value) || 0;
+function setupEventListeners() {
+    document.getElementById('infoBtn').addEventListener('click', () => {
+        document.getElementById('info-modal').style.display = 'block';
+    });
 
-  // Calculate the total amount for all number input fields (excluding income and monthly bills)
-  let totalCategories = 0;
-  let categoryDetails = "";
-  document.querySelectorAll('input[type="number"]').forEach((input) => {
-    if (input.name !== "income" && input.name !== "monthlyBills") {
-      const value = parseFloat(input.value) || 0;
-      totalCategories += value;
-      categoryDetails += `${input.name}: $${value.toFixed(2)}\n`;
+    document.querySelector('.close-button').addEventListener('click', () => {
+        document.getElementById('info-modal').style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('info-modal');
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    document.getElementById('addCategoryBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        const categoryName = prompt('Enter the category name:');
+        if (categoryName && categoryName.trim()) {
+            const field = createCategoryField(categoryName.trim(), true);
+            document.getElementById('custom-categories').appendChild(field);
+            calculateRemaining();
+        }
+    });
+
+    document.getElementById('calculateBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        calculateRemaining();
+    });
+
+    document.getElementById('printBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.print();
+    });
+
+    document.getElementById('income').addEventListener('input', calculateRemaining);
+    document.getElementById('bills').addEventListener('input', calculateRemaining);
+}
+
+function calculateRemaining() {
+    const income = parseFloat(document.getElementById('income').value) || 0;
+    const bills = parseFloat(document.getElementById('bills').value) || 0;
+
+    let totalCategories = 0;
+    const categoryDetails = [];
+
+    document.querySelectorAll('#categories-container .form-group, #custom-categories .form-group').forEach(group => {
+        const input = group.querySelector('input[type="number"]');
+        if (input) {
+            const value = parseFloat(input.value) || 0;
+            totalCategories += value;
+            if (value > 0) {
+                categoryDetails.push({
+                    name: input.name,
+                    amount: value
+                });
+            }
+        }
+    });
+
+    const remaining = income - bills - totalCategories;
+
+    // Update results display
+    let resultsContainer = document.getElementById('results-container');
+    resultsContainer.innerHTML = '';
+
+    // Results Card
+    const resultsCard = document.createElement('div');
+    resultsCard.className = 'results-card';
+
+    const label = document.createElement('div');
+    label.className = 'results-label';
+    label.textContent = 'Remaining Income After Expenses';
+    resultsCard.appendChild(label);
+
+    const value = document.createElement('div');
+    value.className = `results-value ${remaining >= 0 ? 'positive' : 'negative'}`;
+    value.textContent = `$${remaining.toFixed(2)}`;
+    resultsCard.appendChild(value);
+
+    resultsContainer.appendChild(resultsCard);
+
+    // Breakdown
+    if (categoryDetails.length > 0 || bills > 0) {
+        const breakdown = document.createElement('div');
+        breakdown.className = 'breakdown';
+
+        const breakdownTitle = document.createElement('div');
+        breakdownTitle.style.fontWeight = '600';
+        breakdownTitle.style.marginBottom = 'var(--spacing-md)';
+        breakdownTitle.textContent = 'Expense Breakdown';
+        breakdown.appendChild(breakdownTitle);
+
+        if (income > 0) {
+            const incomeItem = document.createElement('div');
+            incomeItem.className = 'breakdown-item';
+            incomeItem.innerHTML = `
+                <span class="breakdown-label">💵 Total Income</span>
+                <span class="breakdown-value">$${income.toFixed(2)}</span>
+            `;
+            breakdown.appendChild(incomeItem);
+        }
+
+        if (bills > 0) {
+            const billsItem = document.createElement('div');
+            billsItem.className = 'breakdown-item';
+            billsItem.innerHTML = `
+                <span class="breakdown-label">📋 Fixed Expenses</span>
+                <span class="breakdown-value">$${bills.toFixed(2)}</span>
+            `;
+            breakdown.appendChild(billsItem);
+        }
+
+        categoryDetails.forEach(detail => {
+            const item = document.createElement('div');
+            item.className = 'breakdown-item';
+            item.innerHTML = `
+                <span class="breakdown-label">${getEmojiForCategory(detail.name)} ${detail.name}</span>
+                <span class="breakdown-value">$${detail.amount.toFixed(2)}</span>
+            `;
+            breakdown.appendChild(item);
+        });
+
+        resultsContainer.appendChild(breakdown);
     }
-  });
 
-  // Calculate remaining income after expenses and category spending
-  const remainingIncome = income - monthlyBills - totalCategories;
-
-  // Display the remaining income to the user
-  const results = document.getElementById("results");
-  results.textContent = `Remaining income after expenses: $${remainingIncome.toFixed(
-    2
-  )}`;
-
-  // Update the print output
-  const printOutput = document.getElementById("print-output");
-  printOutput.textContent = `Income: $${income.toFixed(
-    2
-  )}\nMonthly Bills: $${monthlyBills.toFixed(
-    2
-  )}\n${categoryDetails}Remaining Income: $${remainingIncome.toFixed(2)}`;
+    // Update print output
+    const printOutput = document.getElementById('print-output');
+    let printText = `BUDGETMASTER - Budget Summary\n\n`;
+    printText += `Income: $${income.toFixed(2)}\n`;
+    printText += `Fixed Expenses: $${bills.toFixed(2)}\n\n`;
+    printText += `Category Spending:\n`;
+    categoryDetails.forEach(detail => {
+        printText += `  ${detail.name}: $${detail.amount.toFixed(2)}\n`;
+    });
+    printText += `\nRemaining Income: $${remaining.toFixed(2)}\n`;
+    printOutput.textContent = printText;
 }
-
-// Call the functions
-createForm();
