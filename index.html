@@ -1,115 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BudgetMaster - Personal Finance Management</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='90'>💰</text></svg>">
-    <link rel="stylesheet" href="./src/css/styles.css">
-</head>
-<body>
-    <!-- Header -->
-    <div class="header">
-        <div class="header-content">
-            <h1>💰 BudgetMaster</h1>
-            <div class="header-buttons">
-                <button class="btn btn-secondary btn-icon" id="infoBtn" title="Information">ℹ️ Help</button>
-            </div>
+  <head>
+    <!-- Essential Meta Tags for SEO -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!-- Title Tag (50-60 characters for optimal display) -->
+    <title>BudgetMaster - Free Personal Finance Budget Tool</title>
+
+    <!-- Meta Description (150-160 characters) -->
+    <meta
+      name="description"
+      content="BudgetMaster is a free personal finance management tool. Track income, manage expenses, set budgets by category, and monitor your spending habits easily."
+    />
+
+    <!-- Primary Keywords (Note: Google ignores keywords meta tag, but helpful for reference) -->
+    <meta
+      name="keywords"
+      content="budget tool, personal finance, expense tracker, budget planner, money management"
+    />
+
+    <!-- Author and Copyright Information -->
+    <meta name="author" content="BudgetMaster" />
+    <meta name="copyright" content="Copyright 2025 BudgetMaster" />
+
+    <!-- Robots Meta Tag for Search Engine Crawling -->
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+
+    <!-- Language Declaration -->
+    <meta name="language" content="English" />
+
+    <!-- Open Graph Tags for Social Media Sharing -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="BudgetMaster - Free Personal Finance Budget Tool"
+    />
+    <meta
+      property="og:description"
+      content="Take control of your finances with BudgetMaster. Track income, manage expenses, and build your emergency fund."
+    />
+    <meta
+      property="og:url"
+      content="https://yourusername.github.io/budgetmaster/"
+    />
+    <meta property="og:site_name" content="BudgetMaster" />
+    <meta
+      property="og:image"
+      content="https://yourusername.github.io/budgetmaster/og-image.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="BudgetMaster Personal Finance Tool"
+    />
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="BudgetMaster - Free Personal Finance Budget Tool"
+    />
+    <meta
+      name="twitter:description"
+      content="Take control of your finances with BudgetMaster. Track income, manage expenses, and build your emergency fund."
+    />
+    <meta
+      name="twitter:image"
+      content="https://yourusername.github.io/budgetmaster/og-image.png"
+    />
+
+    <!-- Canonical URL (prevent duplicate content) -->
+    <link rel="canonical" href="https://yourusername.github.io/budgetmaster/" />
+
+    <!-- Google Site Verification (replace with your verification token) -->
+    <meta
+      name="google-site-verification"
+      content="YOUR_GOOGLE_VERIFICATION_TOKEN_HERE"
+    />
+
+    <!-- Favicon for Search Results Display -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+    <!-- CSS and Other Resources -->
+    <link rel="stylesheet" href="./src/css/style.css" />
+    <script src="./src/js/main.js" defer></script>
+  </head>
+  <body>
+    <!-- Semantic HTML5 Structure for Better SEO -->
+
+    <header role="banner">
+      <div class="header-content">
+        <h1>💰 BudgetMaster</h1>
+        <nav role="navigation" aria-label="Main navigation">
+          <ul>
+            <li><a href="#help">ℹ️ Help</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main role="main">
+      <section id="app-interface" aria-labelledby="app-title">
+        <h2 id="app-title">Budget Management</h2>
+
+        <section id="income" aria-labelledby="income-title">
+          <h3 id="income-title">💵 Income</h3>
+          <label for="monthly-income">Monthly Income</label>
+          <input
+            type="number"
+            id="monthly-income"
+            name="monthly-income"
+            placeholder="Enter your monthly income"
+            aria-label="Monthly income input"
+          />
+        </section>
+
+        <section id="expenses" aria-labelledby="expenses-title">
+          <h3 id="expenses-title">📋 Fixed Expenses</h3>
+          <label for="monthly-bills">Monthly Bills</label>
+          <input
+            type="number"
+            id="monthly-bills"
+            name="monthly-bills"
+            placeholder="Enter your monthly bills"
+            aria-label="Monthly bills input"
+          />
+        </section>
+
+        <section id="categories" aria-labelledby="categories-title">
+          <h3 id="categories-title">🏷️ Spending Categories</h3>
+          <div id="categories-list"></div>
+          <button id="add-category-btn" aria-label="Add new spending category">
+            + Add Category
+          </button>
+        </section>
+
+        <div class="actions">
+          <button id="download-btn" aria-label="Download your budget as CSV">
+            ⬇️ Download
+          </button>
+          <button id="print-btn" aria-label="Print your budget">
+            🖨️ Print
+          </button>
         </div>
-    </div>
+      </section>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Form Card -->
-        <div class="card" style="margin-bottom: var(--spacing-xl);">
-            <form id="budget-form">
-                <!-- Income Section -->
-                <div class="section">
-                    <h2 class="section-title">💵 Income</h2>
-                    <div class="form-group">
-                        <label for="income">Monthly Income <span class="required">*</span></label>
-                        <input type="number" id="income" name="income" placeholder="0.00" step="0.01" required>
-                    </div>
-                </div>
-
-                <!-- Bills Section -->
-                <div class="section">
-                    <h2 class="section-title">📋 Fixed Expenses</h2>
-                    <div class="form-group">
-                        <label for="bills">Monthly Bills <span class="required">*</span></label>
-                        <input type="number" id="bills" name="monthlyBills" placeholder="0.00" step="0.01" required>
-                    </div>
-                </div>
-
-                <!-- Categories Section -->
-                <div class="section">
-                    <h2 class="section-title">🏷️ Spending Categories</h2>
-                    <div id="categories-container"></div>
-                </div>
-
-                <!-- Custom Categories -->
-                <div class="section">
-                    <div id="custom-categories"></div>
-                    <button type="button" class="btn btn-secondary btn-block" id="addCategoryBtn">+ Add Category</button>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="button-group">
-                    <button type="button" class="btn btn-primary" id="downloadBtn">⬇️ Download</button>
-                    <button type="button" class="btn btn-secondary" id="printBtn">🖨️ Print</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Results Section -->
+      <!-- Results Container (Above About Section) -->
+      <section id="results" aria-labelledby="results-title">
+        <h2 id="results-title">Budget Summary</h2>
         <div id="results-container"></div>
-    </div>
+      </section>
 
-    <!-- Information Modal -->
-    <div id="info-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">About BudgetMaster</h2>
-                <button class="close-button">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Welcome to <strong>BudgetMaster</strong>, your personal finance management tool!</p>
+      <section id="about" aria-labelledby="about-title">
+        <h2 id="about-title">About BudgetMaster</h2>
+        <p>
+          Welcome to <strong>BudgetMaster</strong>, your personal finance
+          management tool! Take control of your finances with our intuitive
+          budgeting application.
+        </p>
 
-                <h3>How it works:</h3>
-                <ul>
-                    <li><strong>Enter Income:</strong> Input your monthly income</li>
-                    <li><strong>Set Bills:</strong> Add your fixed monthly expenses</li>
-                    <li><strong>Budget Categories:</strong> Allocate spending for each category</li>
-                    <li><strong>Track Remaining:</strong> See exactly how much money you have left</li>
-                    <li><strong>Custom Categories:</strong> Add custom spending categories as needed</li>
-                </ul>
+        <section id="how-it-works" aria-labelledby="how-it-works-title">
+          <h3 id="how-it-works-title">How it works:</h3>
+          <ol>
+            <li>
+              <strong>Enter Income:</strong> Input your monthly income to
+              establish your baseline.
+            </li>
+            <li>
+              <strong>Set Bills:</strong> Add your fixed monthly expenses and
+              obligations.
+            </li>
+            <li>
+              <strong>Budget Categories:</strong> Allocate spending for each
+              category based on your needs.
+            </li>
+            <li>
+              <strong>Track Remaining:</strong> See exactly how much money you
+              have left after expenses.
+            </li>
+            <li>
+              <strong>Custom Categories:</strong> Add custom spending categories
+              as needed for your lifestyle.
+            </li>
+          </ol>
+        </section>
 
-                <h3>Default Categories:</h3>
-                <ul>
-                    <li>💅 Hygiene</li>
-                    <li>🍔 Food</li>
-                    <li>⛽ Gas/Transportation</li>
-                    <li>🚗 Car Maintenance</li>
-                    <li>🎉 Event/Donations</li>
-                    <li>🏦 Emergency Saving</li>
-                    <li>📈 Savings Growth</li>
-                    <li>💸 Pocket/Miscellaneous</li>
-                </ul>
+        <section
+          id="default-categories"
+          aria-labelledby="categories-list-title"
+        >
+          <h3 id="categories-list-title">Default Budget Categories:</h3>
+          <ul>
+            <li>💅 Hygiene & Personal Care</li>
+            <li>🍔 Food & Groceries</li>
+            <li>⛽ Gas & Transportation</li>
+            <li>🚗 Car Maintenance</li>
+            <li>🎉 Events & Donations</li>
+            <li>🏦 Emergency Savings</li>
+            <li>📈 Savings Growth</li>
+            <li>💸 Pocket Money & Miscellaneous</li>
+          </ul>
+        </section>
 
-                <h3>Tips:</h3>
-                <ul>
-                    <li>Update your categories to match your actual spending patterns</li>
-                    <li>Review and adjust your budget monthly</li>
-                    <li>Use the print function to keep a record of your budget</li>
-                    <li>Build your emergency fund gradually</li>
-                </ul>
-            </div>
+        <section id="tips" aria-labelledby="tips-title">
+          <h3 id="tips-title">Money Management Tips:</h3>
+          <ul>
+            <li>
+              <strong>Update Categories:</strong> Adjust your categories to
+              match your actual spending patterns.
+            </li>
+            <li>
+              <strong>Review Monthly:</strong> Review and adjust your budget
+              monthly for better financial control.
+            </li>
+            <li>
+              <strong>Keep Records:</strong> Use the print function to keep a
+              record of your budget progress.
+            </li>
+            <li>
+              <strong>Build Emergency Fund:</strong> Build your emergency fund
+              gradually to secure your financial future.
+            </li>
+          </ul>
+        </section>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <p>
+        &copy; 2025 BudgetMaster. Free personal finance management tool. |
+        <a href="#privacy">Privacy Policy</a> |
+        <a href="#terms">Terms of Service</a>
+      </p>
+    </footer>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Help & Tips</h2>
+          <button
+            type="button"
+            class="close-button"
+            aria-label="Close help modal"
+          >
+            &times;
+          </button>
         </div>
+        <div class="modal-body">
+          <h3>Getting Started with BudgetMaster</h3>
+          <p>Follow these simple steps to create your first budget:</p>
+
+          <h3>Step 1: Enter Your Income</h3>
+          <p>
+            Start by entering your total monthly income. This is your baseline
+            for all budget calculations.
+          </p>
+
+          <h3>Step 2: Add Fixed Expenses</h3>
+          <p>
+            List all your fixed monthly expenses like rent, insurance, loan
+            payments, etc.
+          </p>
+
+          <h3>Step 3: Budget by Category</h3>
+          <p>
+            Allocate money to different spending categories. You can modify
+            existing categories or add custom ones to match your lifestyle.
+          </p>
+
+          <h3>Step 4: Track Your Remaining Budget</h3>
+          <p>
+            The app automatically calculates how much money you have left after
+            all expenses. Aim to have a positive remaining amount each month.
+          </p>
+
+          <h3>Money Management Best Practices</h3>
+          <ul>
+            <li>Review your budget monthly and adjust categories as needed</li>
+            <li>Try to save 10-20% of your income for emergency funds</li>
+            <li>Track actual spending against your budget categories</li>
+            <li>
+              Build an emergency fund equivalent to 3-6 months of expenses
+            </li>
+            <li>Download and keep records of your budgets for reference</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- Print Output -->
-    <div id="print-output" style="display: none;"></div>
-
-    <script src="./src/js/main.js"></script>
-</body>
+    <!-- Structured Data (JSON-LD) for Rich Snippets -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org/",
+        "@type": "WebApplication",
+        "name": "BudgetMaster",
+        "description": "A free personal finance management tool for budgeting and expense tracking",
+        "applicationCategory": "FinanceApplication",
+        "url": "https://shaynefw.github.io/budgetmaster/",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "BudgetMaster"
+        }
+      }
+    </script>
+  </body>
 </html>
